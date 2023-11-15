@@ -52,7 +52,7 @@ const Cart = ({ onClose }) => {
         >
           닫기
         </button>
-        <button className={button}>주문</button>
+        {items.length > 0 && <button className={button}>주문</button>}
       </div>
     </CartModal>
   );
