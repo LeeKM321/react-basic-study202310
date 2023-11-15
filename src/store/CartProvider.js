@@ -3,6 +3,7 @@ import CartContext from './cart-context';
 
 const defaultState = {
   items: [],
+  totalPrice: 0,
 };
 // 리듀서 함수 정의: 여러가지 복잡한 상태관리를 중앙 집중화
 // state: 업데이트 하기 전의 상태값
@@ -10,9 +11,14 @@ const defaultState = {
 const cartReducer = (state, action) => {
   if (action.type === 'ADD') {
     const updatedItem = [...state.items, action.item];
+    console.log(updatedItem);
+
+    const updatedPrice =
+      state.totalPrice + action.item.price * action.item.amount;
 
     return {
       items: updatedItem,
+      totalPrice: updatedPrice,
     }; // 이 액션에 대한 업데이트된 새로운 상태 반환.
   } else if (action.type === 'REMOVE') {
     const removedItems = state.items.filter((item) => item.id !== action.id);
@@ -31,6 +37,7 @@ const CartProvider = ({ children }) => {
   // Provider의 value는 실제로 관리할 데이터 객체.
   const cartContext = {
     items: cartState.items, // 장바구니에 담긴 항목 배열
+    totalPrice: cartState.totalPrice,
     addItem: (item) => {
       // 액션함수는 반드시 무슨 액션을 하는지와 액션에 필요한 값을 전달.
       dispatchCartAction({
